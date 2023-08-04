@@ -1,14 +1,12 @@
 const canvas = document.querySelector("canvas");
-const ctx = canvas.getContext("2d");
+const ctx    = canvas.getContext("2d");
 
-const inputColor = document.querySelector(".input_color");
-const tools = document.querySelectorAll(".button_tool");
+const inputColor  = document.querySelector(".input_color");
+const tools       = document.querySelectorAll(".button_tool");
 const sizeButtons = document.querySelectorAll(".button_size");
 const clearButton = document.querySelector(".button_clear");
 
 let brushSize = 30;
-
-
 let isPainting = false;
 let activeTool = "brush";
 
@@ -73,10 +71,30 @@ const selectTool = ({ target }) => {
     const action = selectedTool.getAttribute("data-action");
 
     if (action) {
+        tools.forEach((tool) => tool.classList.remove("active"));
+
         activeTool = action;
+        selectedTool.classList.add("active");
     }
+}
+
+const selectSize = ({ target }) => {
+    const selectedSize = target.closest("button");
+    const size = selectedSize.getAttribute("data-size");
+
+    sizeButtons.forEach((size) => size.classList.remove("active"));
+    brushSize = size;
+    selectedSize.classList.add("active");
 }
 
 tools.forEach((tool) => {
     tool.addEventListener("click", selectTool);
+})
+
+sizeButtons.forEach((size) => {
+    size.addEventListener("click", selectSize);
+})
+
+clearButton.addEventListener("click", () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 })
